@@ -1,0 +1,72 @@
+---
+title: "Untitled"
+author: "Chen Qiu, 300519505"
+date: '2022-08-08'
+output: html_document
+---
+
+
+```{r}
+df <- read.csv("ANZ_Premiership_2017_2022.csv")
+df[,c('W','L')]
+
+```
+
+
+```{r}
+```
+
+
+```{r}
+library(shiny)
+library(ggplot2)
+library(dbplyr)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(MASS) 
+library(reshape2) 
+library(reshape) 
+w<-aggregate(df[,c('W','L')],by=list(Team=df$Team),sum)
+w
+```
+
+```{r}
+df1<-aggregate(df[,c('W','L')],by=list(Team=df$Team),sum)
+df2<-melt(df1[, c("Team", "W", "L")])
+df2$W_or_L==-df2$variable
+df2
+```
+
+
+```{r}
+df1<-unique(df$Team)
+df1
+```
+
+
+```{r}
+ggplot(df2, aes(value, y = Team, fill = variable)) +
+      geom_bar(stat = "identity")
+```
+
+
+```{r}
+df$wins<-paste('wins:', df$W)
+df$wins<-as.factor(df$wins)
+```
+
+
+```{r}
+library(ggrepel)
+
+ggplot(df, mapping =aes(x=GA, y=GF, color=Team)) +
+    geom_point(alpha=0.5,size=3)+geom_text_repel(mapping =aes(label=wins))
+
+
+```
+
+
+```{r}
+```
+
